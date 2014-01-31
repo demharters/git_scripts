@@ -1,0 +1,2 @@
+#!/bin/bash
+tail -n +14 "rmsd.xvg" > rmsd.dat; awk '{print $2}' rmsd.dat > rmsd_clean.dat; sed -i '1i0' rmsd_clean.dat; maxnum=$(sort -n rmsd_clean.dat |tail -1); num1=1; num=$(echo $maxnum + $num1 | bc); echo $maxnum; echo $num; dist.pl 0 $num 0.05 rmsd_clean.dat 1 > rmsd_dist.dat; energy_vs_rmsd.pl rmsd_clean.dat sampled.pot_energy sampled.inter_energy > rmsd_energy.dat

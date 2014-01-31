@@ -1,0 +1,1 @@
+mkdir $1; infolder $1; tail -n +2 $1/sampled.pot_energy > $1/pot_energy

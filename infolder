@@ -1,0 +1,21 @@
+mkdir $1
+mv *.pos_out $1
+mv *_energy $1
+mv *tors_pos $1
+mv *.eighess $1
+mv *.hessian $1
+mv *out* $1
+mv *pot_energy $1
+mv sampled.pdb $1
+mv sampled.pos $1/sampled.pos.pdb
+mv output $1
+cp ../refine.input $1
+cp refine.input $1
+cp region/region.data $1
+cp init.pdb $1
+mv sampled.pos.pdb $1
+cp region.data $1
+cp ../refine.input $1
+mv last_frame.pdb $1
+mv minima.pdb $1
+mv params.py $1

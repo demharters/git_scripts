@@ -1,0 +1,10 @@
+rm $1*.pos
+rm $1*.pos_out
+rm $1*_energy 
+rm $1*tors_pos 
+rm $1*.eighess
+rm $1*.hessian
+rm sim_param.out
+rm out*
+rm last_frame.pdb
+rm sampled.pos.pdb
