@@ -5,9 +5,13 @@ import numpy
 import math
 import sys
 
+my_traj = sys.argv[1]
 
-u = Universe("init.pdb",sys.argv[1])
+u = Universe("init.pdb",my_traj)
 v = Universe("init.pdb")
+
+end = my_traj.find('.pdb')
+fout_name = my_traj[0:end] + '_dist.dat'
 
 # residues
 #a1 = u.selectAtoms("segid A and resid 46")
@@ -31,7 +35,7 @@ a5 = u.selectAtoms("segid A and resid 50:73")
 b5 = u.selectAtoms("segid B and resid 56:86")
 
 
-f = open('dist.dat','w')
+f = open(fout_name,'w')
 #g = open('angle','w')
 
 for ts in u.trajectory:
@@ -41,6 +45,8 @@ for ts in u.trajectory:
     distance3 = numpy.linalg.norm(a3.centerOfMass() - b3.centerOfMass())
     distance4 = numpy.linalg.norm(a4.centerOfMass() - b4.centerOfMass())
     distance5 = numpy.linalg.norm(a5.centerOfMass() - b5.centerOfMass())
+
+    distance6 = (distance1+distance2+distance3+distance4)/4
 
 	#a4_1,a4_2,a4_3 = a4.principalAxes()
 	#b4_1,b4_2,b4_3 = b4.principalAxes()
@@ -56,7 +62,7 @@ for ts in u.trajectory:
                 
        # print "%6i %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f" % (ts.frame,rmsd0,rmsd1,rmsd2,distance1,distance2,angle1,angle2)
 
-    f.write('%7.3f %7.3f %7.3f %7.3f %7.3f\n' % (distance1,distance2,distance3,distance4,distance5))
+    f.write('%7.3f %7.3f %7.3f %7.3f %7.3f %7.3f\n' % (distance1,distance2,distance3,distance4,distance5,distance6))
 	#f.write('%7.3f\n' % (distance2))
 	#g.write('%7.3f\n' % angle)
 

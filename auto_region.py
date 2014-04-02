@@ -65,7 +65,7 @@ for j in my_chains:
             pass
     
     in_last_res.append(int(in_first_res[cter]) + i-1)
-
+    
     stride += "\n"
     stride_list.append(stride)
     f.close()

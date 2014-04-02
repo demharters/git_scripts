@@ -18,4 +18,4 @@ cp region.data $1
 cp ../refine.input $1
 mv last_frame.pdb $1
 mv minima.pdb $1
-mv params.py $1
+cp params.py $1
