@@ -10,6 +10,11 @@ def main(*argv):
 
     fn = sys.argv[1]
     my_traj = sys.argv[2]
+   
+    # generate filename for output 
+    fout_tmp = my_traj
+    if fout_tmp.endswith('.pdb'):
+        fout_tmp = fout_tmp[:-4]
 
     my_column = int(sys.argv[3])-1
     my_cutoff = float(sys.argv[4])
@@ -38,9 +43,8 @@ def main(*argv):
 
     f.close()
 
-
-    fout_higher_name = 'higher_' + str(my_cutoff) + '.pdb'
-    fout_lower_name = 'lower_' + str(my_cutoff) + '.pdb'
+    fout_higher_name = fout_tmp + '_higher_' + str(my_cutoff) + '.pdb'
+    fout_lower_name = fout_tmp + '_lower_' + str(my_cutoff) + '.pdb'
 
 
     fout_higher = open(fout_higher_name,'w')

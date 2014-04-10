@@ -6,7 +6,10 @@ import numpy
 import math
 import sys
 
-u = Universe("init.pdb",sys.argv[1])
+my_traj = sys.argv[1]
+my_output = my_traj[:-4] + "_dm_dr_dist.dat"
+
+u = Universe("init.pdb",my_traj)
 v = Universe("init.pdb")
 
 # residues
@@ -20,7 +23,7 @@ drA_bg = u.selectAtoms("segid A and resid 58:60")
 dmC_bg = u.selectAtoms("segid C and resid 94:96")
 
 
-f = open('dm_dr_dist.dat','w')
+f = open(my_output,'w')
 
 for ts in u.trajectory:
     
