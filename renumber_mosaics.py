@@ -6,45 +6,50 @@ import os
 def main(*argv):
 
     fn = sys.argv[1]
-
     f = open(fn)
 
-    my_atom_no = []
-    my_atom_name = []
     my_residue_no = []
     my_chains = []
+    my_lines = []
+    i = 0
 
-    my_conect = []
-
-    # parse file
     for line in f:
-        
 
-            if "ATOM" == line[0:4]:
-                
-                my_atom_no.append(int(line[7:11]))
-                my_atom_name.append(line[13:16])
-                my_residue_no.append(int(line[23:26]))
-                my_chains.append(line[21:22])
-                
-            else:
-                pass
-    
-            
+        if "ATOM" == line[0:4] & line[21:22] not in my_chains:
+            parsing = True
+
+        elif parsing:
+
+            # my_residue_no.append(int(line[23:26]))
+            my_chains.append(line[21:22])
+
+        # if not parsing
+        else:
+            pass
+
+    for chain in my_chains:
+
+        for oldLine in f:
+
+            i += 1
+
+            if line[21:22] == chain & i % 3 == False:
+
+                my_lines.append(oldLine)
+
+
     # add final entry so parser does not crash when looking for i+1 in last iteration
     my_chains.append("END")
-           
+    
     f.close()
 
 
-    # store all connections i.e. CA/R CA/O O/CA
     for i in range(len(my_atom_name)):
 
         # reset temporary list
         my_tmp = []
         my_tmp2 = []
 
-        # store connections CA/R and CA/0
         if my_atom_name[i].strip() == "CA":
             
             my_tmp.append(my_atom_no[i])
@@ -56,7 +61,7 @@ def main(*argv):
             my_conect.append(my_tmp)
             my_conect.append(my_tmp2)
 
-        # store O/CA connections that are in the same chain. Stop at last residue.
+        # connect oxygens with CAs of consecutive residues. Stop at last residue.
         elif my_atom_name[i].strip() == "O" and my_residue_no[i] != my_residue_no[-1] and my_chains[i] == my_chains[i+2]:
             
             my_tmp.append(my_atom_no[i])
@@ -64,6 +69,7 @@ def main(*argv):
             
             my_conect.append(my_tmp)
             
+
         else:
             pass
 

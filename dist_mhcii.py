@@ -31,8 +31,8 @@ a4 = u.selectAtoms("segid A and resid 68:73")
 b4 = u.selectAtoms("segid B and resid 56:61")
 
 # helices
-a5 = u.selectAtoms("segid A and resid 50:73")
-b5 = u.selectAtoms("segid B and resid 56:86")
+#a5 = u.selectAtoms("segid A and resid 50:73")
+#b5 = u.selectAtoms("segid B and resid 56:86")
 
 
 f = open(fout_name,'w')
@@ -44,7 +44,7 @@ for ts in u.trajectory:
     distance2 = numpy.linalg.norm(a2.centerOfMass() - b2.centerOfMass())
     distance3 = numpy.linalg.norm(a3.centerOfMass() - b3.centerOfMass())
     distance4 = numpy.linalg.norm(a4.centerOfMass() - b4.centerOfMass())
-    distance5 = numpy.linalg.norm(a5.centerOfMass() - b5.centerOfMass())
+    #distance5 = numpy.linalg.norm(a5.centerOfMass() - b5.centerOfMass())
 
     distance6 = (distance1+distance2+distance3+distance4)/4
 
@@ -62,7 +62,7 @@ for ts in u.trajectory:
                 
        # print "%6i %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f" % (ts.frame,rmsd0,rmsd1,rmsd2,distance1,distance2,angle1,angle2)
 
-    f.write('%7.3f %7.3f %7.3f %7.3f %7.3f %7.3f\n' % (distance1,distance2,distance3,distance4,distance5,distance6))
+    f.write('%7.3f %7.3f %7.3f %7.3f %7.3f\n' % (distance1,distance2,distance3,distance4,distance6))
 	#f.write('%7.3f\n' % (distance2))
 	#g.write('%7.3f\n' % angle)
 
