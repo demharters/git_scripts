@@ -8,3 +8,4 @@ rm sim_param.out
 rm out*
 rm last_frame.pdb
 rm sampled.pos.pdb
+rm sampled.pdb
