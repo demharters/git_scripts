@@ -1,0 +1,119 @@
+#! /usr/bin/python
+
+from MDAnalysis import *
+import os
+import numpy as np
+import math
+from sklearn.metrics import roc_curve, auc
+import pylab as pl
+
+my_reps = 100
+IC50_cutoff = 1000
+rootdir = "/Users/sam/phd/mosaics/setup1_ampl700_shift0_period5k_uniform_0_15_mindist5"
+my_distances = []
+total_avg_distance = {}
+avg_avg_distance = {}
+IC50_d = {}
+cter = 0
+
+y_test = np.array([])
+probs = np.array([])
+
+def test(name):
+    my_repString = name.split("_")[-1]
+    my_repNumber = int(my_repString[3:])
+    return my_repNumber
+
+for subdir, dirs, files in os.walk(rootdir, topdown=True):
+
+    for my_dir in sorted(dirs, key=test):
+            
+        repString = my_dir.split("_")[-1]
+
+        try:
+            repNumber = int(repString[3:])
+        except:
+            pass
+
+        if "threePoint_" in my_dir and repNumber <= my_reps:
+        
+            splitName = my_dir.split("/")[-1]
+            sequence = my_dir.split("_")[-3]
+            IC50 = float(my_dir.split("_")[-2])
+            my_totalDist_dict = {sequence : 0}
+            
+            baseName = '_'.join(splitName.split("_")[:-1])
+            trajName = baseName + "_sampled.pos.pdb"
+            pdbName = baseName + ".pdb"
+            myTrajPath = os.path.join(rootdir,my_dir,trajName)
+            myPDBPath = os.path.join(rootdir,my_dir,pdbName)
+
+            # rename trajectory to end in ".pdb" for MDAnalysis parser
+            #newTrajName = baseName + "_sampled.pos.pdb"
+            #myNewTrajPath = os.path.join(my_dir,newTrajName)
+            
+            #try:
+            #    os.rename(myTrajPath,myNewTrajPath)
+            #except:
+            #    pass
+   
+            
+            print my_dir
+            u = Universe(myPDBPath,myTrajPath)
+
+            a1 = u.selectAtoms("segid A and resid 26")
+            a2 = u.selectAtoms("segid A and resid 97")
+            a3 = u.selectAtoms("segid A and resid 117")
+            c1 = u.selectAtoms("segid C and resid 1")
+            c2 = u.selectAtoms("segid C and resid 5")
+            c3 = u.selectAtoms("segid C and resid 9")
+
+            for ts in u.trajectory:
+
+                if ts.frame == 41:
+                    distance_Nter = np.linalg.norm(a1.centerOfMass() - c1.centerOfMass())
+                    distance_Middle = np.linalg.norm(a2.centerOfMass() - c2.centerOfMass())
+                    distance_Cter = np.linalg.norm(a3.centerOfMass() - c3.centerOfMass())
+
+                    avg_distance = (distance_Nter + distance_Middle + distance_Cter)/3
+                   
+                    if repNumber == 1:
+                        total_avg_distance.update({"%s"%sequence:avg_distance})
+                        
+                        if IC50 >= IC50_cutoff:
+                            binder_status = 1
+                            cter += 1
+
+                        else:
+                            binder_status = 0
+                        
+                        IC50_d.update({"%s"%sequence:binder_status})
+
+                    else:
+                        total_avg_distance.update({"%s"%sequence:total_avg_distance[sequence]+avg_distance})
+                    
+                    #my_distances.append(avg_distance)
+                   
+for i in total_avg_distance:
+    avg_avg_distance.update({"%s"%i:total_avg_distance[i]/my_reps})
+
+for j,k in total_avg_distance.iteritems():
+    y_test = np.append(y_test,int(IC50_d[j]))
+    probs = np.append(probs,avg_avg_distance[j])
+
+y_test2 = np.transpose(y_test)
+probs2 = np.transpose(probs)
+fpr, tpr, thresholds = roc_curve(y_test, probs)
+roc_auc = auc(fpr, tpr)
+print("Area under the ROC curve : %f" % roc_auc)
+
+pl.clf()
+pl.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % roc_auc)
+pl.plot([0, 1], [0, 1], 'k--')
+pl.xlim([0.0, 1.0])
+pl.ylim([0.0, 1.0])
+pl.xlabel('False Positive Rate')
+pl.ylabel('True Positive Rate')
+pl.title('Receiver operating characteristic')
+pl.legend(loc="lower right")
+pl.show()
