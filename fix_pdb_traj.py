@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 
-# Usage: binning.py traj_file 
+# Usage: fix_pdb_traj.py traj_file 
 
 
 import sys

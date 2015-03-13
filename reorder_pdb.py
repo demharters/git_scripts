@@ -66,7 +66,7 @@ def reordering(my_templateFile,my_trajFile):
                         if traj_line[13:17].strip() == templ_line[13:17].strip() and traj_line not in completedRes2:
      
                             AtomNumber += 1
-                            newLine = traj_line[0:7] + "{:>4}".format(str(AtomNumber)) + templ_line[11:27] + traj_line[27:56] + templ_line[56:] 
+                            newLine = traj_line[0:7] + "{:>4}".format(str(AtomNumber)) + templ_line[11:27] + traj_line[27:56] + templ_line[56:] + "\n"
                             my_outFile.write(newLine)
                             completedRes2.append(traj_line)
                             break

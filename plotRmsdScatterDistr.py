@@ -47,6 +47,6 @@ ax.scatter(my_rmsd,my_energy,alpha=0.2)
 #
 ax2.plot(my_x, my_density1, color = "red")
 ax2.set_ylim(0,5)
-plt.show()
-#plt.savefig("rmsdEnergy.png")
+#plt.show()
+plt.savefig("rmsdEnergy.png")
 
