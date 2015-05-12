@@ -3,6 +3,7 @@
 import sys
 import os
 
+# * unpacks argv array
 def main(*argv):
 
     fn = sys.argv[1]
