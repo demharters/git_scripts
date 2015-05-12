@@ -9,3 +9,4 @@ rm out*
 rm last_frame.pdb
 rm sampled.pos.pdb
 rm sampled.pdb
+rm sampled.pos_out.pdb
