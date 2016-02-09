@@ -35,7 +35,8 @@
   $r_bond_C5M_H         =  1.11;                # in A
   $r_bond_OH_HO         =  0.96;                # in A "OH"-"HO" distance in AMBER
   $theta_C5M_OH_HO      =  108.5;               # in deg
-  $phi_N6_C5M_OH_HO     = 2.0*3.14*120.0/180.0; # in rad   change 120, remove 2:
+#  $phi_N6_C5M_OH_HO     = 2.0*3.14*120.0/180.0; # in rad   change 120, remove 2:
+  $phi_N6_C5M_OH_HO     = 2.0*3.14*210/180.0; # in rad   change 120, remove 2:
 
   $pi                 =  3.14;     # in rad
 

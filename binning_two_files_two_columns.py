@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 
-# Usage: binning.py filter_data data_to_extract_from column1 column2 cutoff 
+# Usage: binning.py filter_data data_to_extract_from column1 column2 cutoff1 cutoff2
 
 
 import sys
@@ -12,15 +12,16 @@ def main(*argv):
     my_data = sys.argv[2]
     my_column1 = int(sys.argv[3])-1
     my_column2 = int(sys.argv[4])-1
-    my_cutoff = float(sys.argv[5])
+    my_cutoff1 = float(sys.argv[5])
+    my_cutoff2 = float(sys.argv[6])
    
     # generate filename for output 
     fout_tmp = my_data
     if fout_tmp.endswith('.dat'):
         fout_tmp = fout_tmp[:-4]
     
-    fout_higher_name = fout_tmp + '_higher2col_' + str(my_cutoff) + '.dat'
-    fout_lower_name = fout_tmp + '_lower2col_' + str(my_cutoff) + '.dat'
+    fout_higher_name = fout_tmp + '_higher2col_' + str(my_cutoff1) + "_" + str(my_cutoff2)+ '.dat'
+    fout_lower_name = fout_tmp + '_lower2col_' + str(my_cutoff1) + "_" + str(my_cutoff2)+ '.dat'
 
     higher_vals = []
     lower_vals = []
@@ -34,11 +35,11 @@ def main(*argv):
         i += 1
        
 
-        if (float(line.split()[my_column1]) > my_cutoff) and (float(line.split()[my_column2]) > my_cutoff):
+        if (float(line.split()[my_column1]) > my_cutoff1) and (float(line.split()[my_column2]) > my_cutoff2):
             #print("Higher than %s: %s %s" % (my_cutoff,line.split()[my_column1],line.split()[my_column2]))
             higher_vals.append(i)
 
-        elif (float(line.split()[my_column1]) < my_cutoff) and (float(line.split()[my_column2]) < my_cutoff):
+        elif (float(line.split()[my_column1]) < my_cutoff1) and (float(line.split()[my_column2]) < my_cutoff2):
             #print("Lower than %s: %s %s" % (my_cutoff,line.split()[my_column1],line.split()[my_column2]))
             lower_vals.append(i)
 

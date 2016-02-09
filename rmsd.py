@@ -7,7 +7,7 @@ from MDAnalysis.analysis.rms import *
 
 my_traj = sys.argv[1]
 u = Universe(my_traj,my_traj)
-bb = u.selectAtoms('all')
+bb = u.selectAtoms('all and not resname TIP')
 
 A = bb.coordinates()  # coordinates of first frame
 
