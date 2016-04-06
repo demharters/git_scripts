@@ -38,7 +38,7 @@ for setup in mySetups:
 
     for dir,subdirs,files in os.walk("."):
         for myDir in subdirs:
-            if setup in myDir and "rep" in myDir:
+            if setup in myDir and "rep30" in myDir:
 
                 os.chdir(myDir)
                 myIndexes = []
@@ -50,6 +50,8 @@ for setup in mySetups:
 
                 for i in range(0,len(myList)):
                     myVals2.append(myList[i][myColumn])
+
+                print myVals2
 
                 for i, j in enumerate(map(float,myVals2)):
                     if j == myMedian:
