@@ -1,0 +1,81 @@
+#! /usr/bin/python3
+
+# Usage: binning.py filter_data rmsdEnergy_file column cutoff 
+
+
+import sys
+import os
+
+def main(*argv):
+
+    fn = sys.argv[1]
+    my_rmsdEnergy = sys.argv[2]
+   
+    # generate filename for output 
+    fout_tmp = my_rmsdEnergy
+    if fout_tmp.endswith('.dat'):
+        fout_tmp = fout_tmp[:-4]
+
+    my_column = int(sys.argv[3])-1
+    my_cutoff = float(sys.argv[4])
+
+    higher_vals = []
+    lower_vals = []
+
+    f = open(fn)
+
+    i = 0
+
+    for line in f:
+
+        i += 1
+        
+        if float(line.split()[my_column]) > my_cutoff:
+			
+            higher_vals.append(i)
+
+        elif float(line.split()[my_column]) < my_cutoff:
+
+            lower_vals.append(i)
+
+        else:
+            pass
+
+    f.close()
+
+    fout_higher_name = fout_tmp + '_higher_' + str(int(my_cutoff)) + '.dat'
+    fout_lower_name = fout_tmp + '_lower_' + str(int(my_cutoff)) + '.dat'
+
+
+    fout_higher = open(fout_higher_name,'w')
+    fout_lower = open(fout_lower_name,'w')
+
+    with open(my_rmsdEnergy) as f:
+
+        parsing = False
+        i = 1
+        j = 1
+        cter = 0
+
+        for line in f:
+
+            cter += 1
+            
+            if cter in higher_vals:
+
+                print(line.rstrip("\n"),file = fout_higher)
+
+            elif cter not in higher_vals:
+
+                print(line.rstrip("\n"),file = fout_lower)
+            
+            else:
+                pass
+
+
+    fout_higher.close()
+    fout_lower.close()
+
+
+if __name__ == "__main__":
+	main(sys.argv)

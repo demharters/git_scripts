@@ -7,8 +7,10 @@ import sys
 
 my_traj = sys.argv[1]
 
-u = Universe("init.pdb",my_traj)
-v = Universe("init.pdb")
+#u = Universe("init.pdb",my_traj)
+#v = Universe("init.pdb")
+u = Universe("../init.pdb",my_traj)
+v = Universe("../init.pdb")
 
 end = my_traj.find('.pdb')
 fout_name = my_traj[0:end] + '_dist.dat'

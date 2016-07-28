@@ -13,10 +13,11 @@ import my_elbow_angle_tcr
 my_file = sys.argv[1]
 
 end = my_file.find(".pdb")
-file_name = my_file[0:end]
+fileName = my_file[0:end]
+newFileName = fileName + "_reordered.pdb"
 
-pymol.cmd.load(my_file,file_name)
+pymol.cmd.load(my_file,fileName)
 
-pymol.cmd.save("init_reordered.pdb",file_name)
+pymol.cmd.save(newFileName,fileName,state=0)
 
 pymol.cmd.quit()
