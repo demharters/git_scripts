@@ -1,0 +1,5 @@
+1) remove_H.pl
+2) reduce adds hydrogens
+3) PAS_pdb_format.pl
+4) Delete all lines with ATOM OXT
+5) add an HN to all initial residues 

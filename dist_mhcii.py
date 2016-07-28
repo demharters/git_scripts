@@ -62,7 +62,8 @@ for ts in u.trajectory:
                 
        # print "%6i %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f" % (ts.frame,rmsd0,rmsd1,rmsd2,distance1,distance2,angle1,angle2)
 
-    f.write('%7.3f %7.3f %7.3f %7.3f %7.3f\n' % (distance1,distance2,distance3,distance4,distance6))
+    #f.write('%7.3f %7.3f %7.3f %7.3f %7.3f\n' % (distance1,distance2,distance3,distance4,distance6))
+    f.write('%7.3f\n' % (distance3))
 	#f.write('%7.3f\n' % (distance2))
 	#g.write('%7.3f\n' % angle)
 

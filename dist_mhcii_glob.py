@@ -13,17 +13,14 @@ u = Universe("init.pdb",my_traj)
 v = Universe("init.pdb")
 
 # residues
-a1 = u.selectAtoms("segid A and resid 78:182")
-b1 = u.selectAtoms("segid B and resid 91:190")
-
-# helices
-a4 = u.selectAtoms("segid A and resid 46:77")
-b4 = u.selectAtoms("segid B and resid 51:90")
+#a1 = u.selectAtoms("segid A and resid 78:182")
+#b1 = u.selectAtoms("segid B and resid 91:190")
+a1 = u.selectAtoms("segid A and resid 84:182")
+b1 = u.selectAtoms("segid B and resid 95:190")
 
 fout_dist = my_traj[0:end] + '_glob_dist.dat'
 
 f = open(fout_dist,'w')
-#g = open('angle','w')
 
 for ts in u.trajectory:
         
@@ -46,9 +43,7 @@ for ts in u.trajectory:
                 
        # print "%6i %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f" % (ts.frame,rmsd0,rmsd1,rmsd2,distance1,distance2,angle1,angle2)
 
-	#f.write('%7.3f %7.3f % 7.3f % 7.3f\n' % (distance1,distance2,distance3,distance4))
 	f.write('%7.3f\n' % (distance1))
-	#g.write('%7.3f\n' % angle)
 
 f.close()
 #g.close()
