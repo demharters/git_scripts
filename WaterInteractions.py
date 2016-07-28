@@ -16,7 +16,7 @@ H_CUTOFF = 6
 def get_pairs():
 	pairs = []
 	#Example pair
-	pairs.append((('A',11,'N6'),('A',10,'O2P')))
+	pairs.append((("A",4,'C5'),('A',5,'O2P')))
 
 	return pairs
 
