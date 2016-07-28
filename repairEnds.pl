@@ -1,19 +1,19 @@
 #! /usr/bin/perl -w 
 #
 # usage:
-#  ./methyl2formyl_all_CME.pl 5Me-CYT-DNA.pdb > 5f-CYT-DNA.pdb
+#  ./hydroxylate_all_CME.pl 5Me-CYT-DNA.pdb > 5MeOH-CYT-DNA.pdb
 #
-# This script changes 5MeC residues to 5fC in a DNA 
+# This script hydroxylates all 5MeC residues in a DNA 
 #
 #                      H42  H41
 #                        \  /
 #                         N4
 #                         |
-#      H51             O  C4
-#       |             || / \\
-#  H52-C5M-        H5-C-C5   N3
-#       |               ||   |
-#      H53              C6   C2
+#       H51      HO-OH    C4
+#        |          |    / \\
+#               H52-C5M-C5   N3
+#                   |   ||   |
+#                  H53  C6   C2
 #                      / \  / \\
 #                     H6  N1   O2
 #                           \
@@ -29,16 +29,17 @@
 #                    |       |
 #                           H2'
 # Copyright (c) 2007 Peter Minary
-                                                #      "." atom type in AMBER
-  $r_bond_C5_C5M        =  1.51;                # in A "CM"-"CT" distance in AMBER
-  $r_bond_C5_C          =  1.444;               # in A "CM"-"C" distance in AMBER 
-  $r_bond_C_O           =  1.229;               # in A "C"="O" distance in AMBER
-  $r_bond_C_H5          =  1.08;                # in A "C"-"H4" distance in AMBER
-  $theta_C5_C_O         =  125.3;               # in deg "CM"-"C"-"O" angle in AMBER
-  $theta_C5_C_H5        =  115.0;               # in deg "CM"-"C"-"H4" angle in AMBER
-  $pi                   =  3.14;     
-  $phi_C6_C5_C_O        =  $pi;      # default: 0.0  in rad
-  $phi_C6_C5_C_H5       =  0.0;      # default: $pi in rad 
+
+  $r_bond_C5M_OH        =  1.41;                # in A "CT"-"OH" distance in AMBER
+  $r_bond_C5M_H         =  1.11;                # in A
+  $r_bond_OH_HO         =  0.96;                # in A "OH"-"HO" distance in AMBER
+#  $theta_C5_C5M_OH      =  110.10;              # in deg
+  $theta_C5M_OH_HO      =  108.5;               # in deg
+#  $phi_C6_C5_C5M_OH     =     3.14*120.0/180.0; # in rad
+  #$phi_C5_C5M_OH_HO     = 2.0*3.14*120.0/180.0; # in rad 
+  $phi_C5_C5M_OH_HO     = 2.0*3.14*180.0/180.0; # in rad 
+
+  $pi                 =  3.14;     # in rad
 
   $nline  = 0;
   while (<>) {
@@ -93,7 +94,7 @@
                   }
                   if ($resSeq[$jline] eq  $resSeq_CME) {
                       if ( substr($entry_jline,0,4) eq 'ATOM') { 
-                           substr($entry_jline,17,3) = 'CFO';
+                           substr($entry_jline,17,3) = 'CHM';
                            $entry[$jline] = $entry_jline;
                       }
                       $natm_CME++;
@@ -107,86 +108,52 @@
                           $yC5M = $y[$jline];
                           $zC5M = $z[$jline];
                       }
-                      if ($atom[$jline] eq 'C6') {
-                          $xC6 = $x[$jline];
-                          $yC6 = $y[$jline];
-                          $zC6 = $z[$jline];
+                      if ($atom[$jline] eq 'H51') {
+                          $xH51 = $x[$jline];
+                          $yH51 = $y[$jline];
+                          $zH51 = $z[$jline];
                       }
                   } 
                   else {last;}
              }
 
-             # build C 
-               $ratio = $r_bond_C5_C/$r_bond_C5_C5M;
-               $xC = $xC5 + $ratio*($xC5M - $xC5);
-               $yC = $yC5 + $ratio*($yC5M - $yC5);
-               $zC = $zC5 + $ratio*($zC5M - $zC5);
+             # build OH 
+               $ratio = $r_bond_C5M_OH/$r_bond_C5M_H;
+               $xOH = $xC5M + $ratio*($xH51 - $xC5M);
+               $yOH = $yC5M + $ratio*($yH51 - $yC5M);
+               $zOH = $zC5M + $ratio*($zH51 - $zC5M);
                
-             # build O       
+             # build HO       
 
                  # use procedure applied within DC-REPSWA
-                 # define r1=C6, r2=C5, r3=C, r, theta, phi
-                 $r1x = $xC6; $r1y = $yC6; $r1z = $zC6;
-                 $r2x = $xC5; $r2y = $yC5; $r2z = $zC5;
-                 $r3x = $xC;  $r3y = $yC;  $r3z = $zC;
+                 # define r1=C5, r2=C5M, r3=OH, r, theta, phi
+                 $r1x = $xC5; $r1y = $yC5; $r1z = $zC5;
+                 $r2x = $xC5M; $r2y = $yC5M; $r2z = $zC5M;
+                 $r3x = $xOH; $r3y = $yOH; $r3z = $zOH;
 
-                 $r     = $r_bond_C_O;
-                 $theta = $pi*(180.0-$theta_C5_C_O)/180.0;
+                 $r     = $r_bond_OH_HO;
+                 $theta = $pi*(180.0-$theta_C5M_OH_HO)/180.0;
                
-                 # O
-                 $phi   = $phi_C6_C5_C_O;
+                 # HO
+                 $phi   = $phi_C5_C5M_OH_HO;
                  # build r4 based on r1, r2, r3, r, theta, phi
                  &build_r4;
-                 # read out O
-                 $xO = $r4x; $yO = $r4y; $zO = $r4z;                    
+                 # read out HO
+                 $xHO = $r4x; $yHO = $r4y; $zHO = $r4z;                    
 
-             # build H5       
-
-                 # use procedure applied within DC-REPSWA
-                 # define r1=C6, r2=C5, r3=C, r, theta, phi
-                 $r1x = $xC6; $r1y = $yC6; $r1z = $zC6;
-                 $r2x = $xC5; $r2y = $yC5; $r2z = $zC5;
-                 $r3x = $xC;  $r3y = $yC;  $r3z = $zC;
-
-                 $r     = $r_bond_C_H5;
-                 $theta = $pi*(180.0-$theta_C5_C_H5)/180.0;
-               
-                 # O
-                 $phi   = $phi_C6_C5_C_H5;
-                 # build r4 based on r1, r2, r3, r, theta, phi
-                 &build_r4;
-                 # read out H5
-                 $xH5 = $r4x; $yH5 = $r4y; $zH5 = $r4z;                    
-
-                 $insert_line = $iline + $natm_CME;
+                 $insert_line = $iline + $natm_CME - 1;
 
 	 }#endif-CME#
 
          $entry = $entry[$iline];
-#         $entry_new = $entry;
+         $entry_new = $entry;
 
          if ($insert_line == $iline) {
-
-             $ilinem1   = $iline - 1;
-             $entry_new = $entry[$ilinem1];
-
-             $atom_new = ' C  ';
+             $atom_new = 'OH  ';
              substr($entry_new,12,4) = $atom_new;
-             $x_field = sprintf("%8.5g",$xC);
-             $y_field = sprintf("%8.5g",$yC);
-             $z_field = sprintf("%8.5g",$zC);
-             substr($entry_new,30,8) = $x_field;
-             substr($entry_new,38,8) = $y_field;
-             substr($entry_new,46,8) = $z_field;
-             substr($entry_new,6,5)  = '    0';
-#             substr($entry_new,70,15) = '   C';
-             print "$entry_new\n";
-
-             $atom_new = ' O  ';
-             substr($entry_new,12,4) = $atom_new;
-             $x_field = sprintf("%8.5g",$xO);
-             $y_field = sprintf("%8.5g",$yO);
-             $z_field = sprintf("%8.5g",$zO);
+             $x_field = sprintf("%8.5g",$xOH);
+             $y_field = sprintf("%8.5g",$yOH);
+             $z_field = sprintf("%8.5g",$zOH);
              substr($entry_new,30,8) = $x_field;
              substr($entry_new,38,8) = $y_field;
              substr($entry_new,46,8) = $z_field;
@@ -194,11 +161,11 @@
 #             substr($entry_new,70,15) = '   O';
              print "$entry_new\n";
 
-             $atom_new = 'H5  ';
+             $atom_new = 'HO  ';
              substr($entry_new,12,4) = $atom_new;
-             $x_field = sprintf("%8.5g",$xH5);
-             $y_field = sprintf("%8.5g",$yH5);
-             $z_field = sprintf("%8.5g",$zH5);
+             $x_field = sprintf("%8.5g",$xHO);
+             $y_field = sprintf("%8.5g",$yHO);
+             $z_field = sprintf("%8.5g",$zHO);
              substr($entry_new,30,8) = $x_field;
              substr($entry_new,38,8) = $y_field;
              substr($entry_new,46,8) = $z_field;
@@ -210,15 +177,9 @@
          else {
             $resName[$iline] = substr($entry[$iline],17,3); 
             $resName[$iline] =~ tr/ //d;
-            if ($resName[$iline] eq 'CFO') { 
+            if ($resName[$iline] eq 'CHM') { 
                if ((substr($entry,12,4) ne 'H51 ') &&
-                   (substr($entry,12,4) ne ' H51') &&
-                   (substr($entry,12,4) ne 'H52 ') &&
-                   (substr($entry,12,4) ne ' H52') &&
-                   (substr($entry,12,4) ne 'H53 ') &&
-                   (substr($entry,12,4) ne ' H53') &&
-                   (substr($entry,12,4) ne 'C5M ') &&
-                   (substr($entry,12,4) ne ' C5M')) {print "$entry\n";}
+                   (substr($entry,12,4) ne ' H51')) {print "$entry\n";}
             } else {
                     print "$entry\n"; 
             }

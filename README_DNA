@@ -1,0 +1,7 @@
+0) ./remove_H.pl 
+1) ./insert_chain_id.pl if missing id 
+2) ./rename_DNA_res.pl
+3) pymol h_add command
+4) ./rename_DNA_H.pl
+5) ./pdb_to_PAS_pdb.pl
+6) remove first/last residue
