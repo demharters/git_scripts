@@ -1,19 +1,11 @@
- 1) If the pdb has H's, then just run
+                                                                                                                                         
+ ,---.                    ,--.                              ,--.         ,--.             ,--.,--.,--.                                   
+'   .-'  ,--,--.,--,--,--.|  |,---.      ,---.  ,---.,--.--.`--' ,---. ,-'  '-. ,---.     |  |`--'|  |-. ,--.--. ,--,--.,--.--.,--. ,--. 
+`.  `-. ' ,-.  ||        |`-'(  .-'     (  .-' | .--'|  .--',--.| .-. |'-.  .-'(  .-'     |  |,--.| .-. '|  .--'' ,-.  ||  .--' \  '  /  
+.-'    |\ '-'  ||  |  |  |   .-'  `)    .-'  `)\ `--.|  |   |  || '-' '  |  |  .-'  `)    |  ||  || `-' ||  |   \ '-'  ||  |     \   '   
+`-----'  `--`--'`--`--`--'   `----'     `----'  `---'`--'   `--'|  |-'   `--'  `----'     `--'`--' `---' `--'    `--`--'`--'   .-'  /    
+                                                                `--'                                                           `---'     
 
-  pdb_to_PAS_pdb.pl
 
- 2) If the pdb does not have H's, then run 
-
- a) ./reduce -build A_noH.pdb > A.pdb
- b) ./PAS_pdb_format.pl A.pdb > A_final.pdb
-
- This b) will run pdb_to_PAS_pdb.pl along with a script I 
-wrote that protnates the CYS residues, because reduce does
-not protonate CYS....
-
- 3) If 1) 2) Fails than 
-
-    a) remove_H.pl A.pdb > A_noH.pdb
-    b) Proceed with 2)
-
-  
+A list of scripts related to computational structural biology, in particular Natural Move Monte Carlo simulations,
+that I have written over the course of my PhD.
