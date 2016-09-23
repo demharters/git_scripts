@@ -6,15 +6,17 @@ import math
 import sys
 
 my_traj = sys.argv[1]
+my_struc = sys.argv[2]
 
-u = Universe("init.pdb",my_traj)
-v = Universe("init.pdb")
+u = Universe(my_struc,my_traj)
 
 end = my_traj.find('.pdb')
 fout_angle = my_traj[0:end] + '_angle.dat'
 
-a = u.selectAtoms("segid A and resid 78:182")
-b = u.selectAtoms("segid B and resid 91:190")
+#a = u.selectAtoms("segid A and resid 78:182")
+#b = u.selectAtoms("segid B and resid 91:190")
+a = u.selectAtoms("segid A and resid 84:182")
+b = u.selectAtoms("segid B and resid 95:190")
 
 g = open(fout_angle,'w')
 

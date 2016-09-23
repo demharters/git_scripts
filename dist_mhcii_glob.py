@@ -7,10 +7,10 @@ import math
 import sys
 
 my_traj = sys.argv[1]
+my_struc = sys.argv[2]
 end = my_traj.find('.pdb')
 
-u = Universe("../init.pdb",my_traj)
-v = Universe("../init.pdb")
+u = Universe(my_struc,my_traj)
 
 # residues
 #a1 = u.selectAtoms("segid A and resid 78:182")

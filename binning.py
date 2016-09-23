@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! /usr/local/bin/python3
 
 # Usage: binning.py filter_data trajectory column cutoff 
 

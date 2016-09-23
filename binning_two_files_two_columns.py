@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! /usr/local/bin/python3
 
 # Usage: binning.py filter_data data_to_extract_from column1 column2 cutoff1 cutoff2
 
@@ -32,6 +32,7 @@ def main(*argv):
 
     for line in f:
 
+        print(line.split()[my_column2])
         i += 1
        
 

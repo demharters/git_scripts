@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! /usr/local/bin/python3.5
 
 # Usage: fix_pdb_traj.py traj_file 
 

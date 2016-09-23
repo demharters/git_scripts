@@ -1,4 +1,4 @@
-#!/usr/bin/python3.3
+#!/usr/local/bin/python3.5
 
 import sys
 import os
@@ -13,15 +13,19 @@ def main(*argv):
     my_lines = []
     i = 0
 
+    parsing = False
     for line in f:
 
-        if "ATOM" == line[0:4] & line[21:22] not in my_chains:
+        if "ATOM" == line[0:4] and line[21:22] not in my_chains:
             parsing = True
 
-        elif parsing:
+        elif parsing and "TER" not in line and "ENDMDL" not in line:
 
             # my_residue_no.append(int(line[23:26]))
             my_chains.append(line[21:22])
+
+        if "ENDMDL" in line:
+            parsing = False
 
         # if not parsing
         else:
